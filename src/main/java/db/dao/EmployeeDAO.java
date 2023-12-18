@@ -12,7 +12,7 @@ public interface EmployeeDAO {
 
     void update(Employee employee) throws SQLException;
 
-    void delete(Employee employee) throws SQLException;
+    void delete(Long id) throws SQLException;
 
     List<Employee> getAll() throws SQLException;
 }

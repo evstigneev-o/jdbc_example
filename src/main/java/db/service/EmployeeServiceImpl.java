@@ -24,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployeeById(Long id) {
         Employee employee = null;
-        if (id > 0) {
+        if (id != null && id > 0) {
             try {
                 employee = employeeDAO.getById(id);
             } catch (SQLException e) {
@@ -46,10 +46,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployee(Employee employee) {
-        if (employee != null && employee.getId() != null && employee.getId() > 0) {
+    public void deleteEmployeeById(Long id) {
+        if (id != null && id > 0) {
             try {
-                employeeDAO.delete(employee);
+                employeeDAO.delete(id);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

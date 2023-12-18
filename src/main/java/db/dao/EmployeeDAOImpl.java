@@ -18,7 +18,6 @@ public class EmployeeDAOImpl implements EmployeeDAO{
             ps.setString(3,employee.getRole());
             ps.executeUpdate();
         }
-
     }
 
     @Override
@@ -27,15 +26,11 @@ public class EmployeeDAOImpl implements EmployeeDAO{
         String sql = "SELECT * FROM employee WHERE id=?";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setLong(1,id);
-            ResultSet resultSet = ps.executeQuery();
-            if(resultSet.next()){
-                employee = new Employee();
-                employee.setId(resultSet.getLong("id"));
-                employee.setFirstName(resultSet.getString("first_name"));
-                employee.setLastName(resultSet.getString("last_name"));
-                employee.setRole(resultSet.getString("role"));
+            try(ResultSet resultSet = ps.executeQuery()){
+                if(resultSet.next()){
+                    employee = resultSetToEmployee(resultSet);
+                }
             }
-
         }
         return employee;
     }
@@ -53,30 +48,33 @@ public class EmployeeDAOImpl implements EmployeeDAO{
     }
 
     @Override
-    public void delete(Employee employee) throws SQLException {
+    public void delete(Long id) throws SQLException {
         String sql = "DELETE FROM employee WHERE id=?";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
-            ps.setLong(1,employee.getId());
+            ps.setLong(1,id);
             ps.executeUpdate();
         }
-
     }
 
     @Override
     public List<Employee> getAll() throws SQLException {
         List<Employee> employeeList = new ArrayList<>();
         String sql = "SELECT * FROM employee";
-        try(Statement statement = connection.createStatement()){
-            ResultSet resultSet = statement.executeQuery(sql);
+        try(Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql)){
             while (resultSet.next()){
-                Employee employee = new Employee();
-                employee.setId(resultSet.getLong("id"));
-                employee.setFirstName(resultSet.getString("first_name"));
-                employee.setLastName(resultSet.getString("last_name"));
-                employee.setRole(resultSet.getString("role"));
+                Employee employee = resultSetToEmployee(resultSet);
                 employeeList.add(employee);
             }
         }
         return employeeList;
+    }
+    private Employee resultSetToEmployee(ResultSet resultSet) throws SQLException{
+        Employee employee = new Employee();
+        employee.setId(resultSet.getLong("id"));
+        employee.setFirstName(resultSet.getString("first_name"));
+        employee.setLastName(resultSet.getString("last_name"));
+        employee.setRole(resultSet.getString("role"));
+        return employee;
     }
 }
