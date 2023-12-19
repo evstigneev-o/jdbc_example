@@ -14,13 +14,13 @@ public class DBUtils {
    static String PASSWORD = "";
 
     public static Connection getConnection(){
-        Connection connection = null;
         try{
-            connection = DriverManager.getConnection(URL,USER, PASSWORD);
-            logger.info("Connection OK");
+            Connection connection = DriverManager.getConnection(URL,USER, PASSWORD);
+            logger.info("Connection established");
+            return connection;
         } catch (SQLException e){
             logger.error("Connection ERROR", e);
+            throw new RuntimeException("Failed to establish connection", e);
         }
-        return connection;
     }
 }
