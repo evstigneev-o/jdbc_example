@@ -1,10 +1,14 @@
 package db;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtils {
+    private static final Logger logger = LoggerFactory.getLogger(DBUtils.class);
    static String URL = "jdbc:h2:mem:test;INIT=RUNSCRIPT FROM 'classpath:init.sql'";
    static String USER = "sa";
    static String PASSWORD = "";
@@ -13,9 +17,9 @@ public class DBUtils {
         Connection connection = null;
         try{
             connection = DriverManager.getConnection(URL,USER, PASSWORD);
-            System.out.println("Connection OK");
+            logger.info("Connection OK");
         } catch (SQLException e){
-            System.out.println("Connection ERROR");
+            logger.error("Connection ERROR", e);
         }
         return connection;
     }

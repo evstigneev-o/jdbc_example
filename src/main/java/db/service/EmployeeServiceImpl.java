@@ -3,11 +3,14 @@ package db.service;
 import db.dao.EmployeeDAO;
 import db.dao.EmployeeDAOImpl;
 import entity.Employee;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
     private final EmployeeDAO employeeDAO = new EmployeeDAOImpl();
 
     @Override
@@ -16,7 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             try {
                 employeeDAO.add(employee);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Something went wrong",e);
             }
         }
     }
@@ -28,7 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             try {
                 employee = employeeDAO.getById(id);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Something went wrong",e);
             }
         }
         return employee;
@@ -40,7 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             try {
                 employeeDAO.update(employee);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Something went wrong",e);
             }
         }
     }
@@ -51,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             try {
                 employeeDAO.delete(id);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("Something went wrong",e);
             }
         }
     }
@@ -62,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             employeeList = employeeDAO.getAll();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Something went wrong",e);
         }
         return employeeList;
     }
